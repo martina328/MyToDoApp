@@ -1,2 +1,3 @@
 # MyToDoApp
-Microsoft Everyone Can Code!
+Microsoft Everyone Can Code! <br>
+https://github.com/microsoft/EveryoneCanCode-US.git
