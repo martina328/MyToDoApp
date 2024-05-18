@@ -1,5 +1,13 @@
 todo_list = []
 
+# load the to-do list from a file
+try:
+    with open("todo_list.txt", "r") as file:
+        for line in file:
+            todo_list.append(line.strip())
+except FileNotFoundError:
+    print("No saved items found")
+
 # continue to loop and display menu until the user selects to exit the program
 while True:
     print() # add a couple of blank lines
@@ -36,12 +44,13 @@ while True:
     
 
     # user selected 'x' or 'X' to exit the program
+    # user selected 'x' or 'X' to exit the program
     if choice == "X":
-    # save the to-do list to a file
+        # save the to-do list to a file
         with open("todo_list.txt", "w") as file:
             for todo in todo_list:
                 file.write(f"{todo}\n")
-        break
+            break
 
     # user selected something else
     print("Invalid choice")
