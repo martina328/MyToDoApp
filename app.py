@@ -8,6 +8,7 @@ from flask import Flask, render_template, request, redirect, url_for, g
 # redirect and url_for are packages to allow you to redirect the user to a different page and get the final URL for the given relative path
 
 from database import db, Todo
+from recommendation_engine import RecommendationEngine
 
 app = Flask(__name__)
 # __name__ is a special variable in Python representing the name of the currently-running module
@@ -52,6 +53,15 @@ def remove_todo(id):
     db.session.delete(Todo.query.filter_by(id=id).first())
     db.session.commit()
     return redirect(url_for("index"))
+
+# show AI recommendations
+@app.route("/recommend/<int:id>", methods=["GET"])
+async def recommend(id):
+    recommendation_engine = RecommendationEngine()
+    g.todo = db.session.query(Todo).filter_by(id=id).first()
+    g.todo.recommendations = await recommendation_engine.get_recommendations(g.todo.name)
+        
+    return render_template("index.html")
 
 if __name__ == "__main__":
     app.run(debug=True)
