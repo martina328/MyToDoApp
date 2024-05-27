@@ -5,15 +5,15 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
     <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
-    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
 </head>
 <body>
     <br/>
     <br/>
     <div class="container">
         <div class="h-100 p-5 bg-body-tertiary border rounded-3">
-            <h1>My To-Do List</h1>
+            <h2>My To-Do List</h1>
         </div>
         <br />
         <div class="row">
@@ -21,7 +21,7 @@
                 <form>
                     <ol class="list-group">
                         {% for todo in g.todos %}
-                        <li id="task-{{ todo.id }}" data-id="{{ todo.id }}" class="list-group-item d-flex justify-content-between" onclick="showDetails(this)">
+                            <li id="task-{{ todo.id }}" data-id="{{ todo.id }}" class="list-group-item d-flex justify-content-between" onclick="showDetails(this)">
                                 <div class="task">
                                     <div class="form-check">
                                         {% if todo.completed %}
@@ -45,8 +45,9 @@
                                     </div>
                                 </div>
                                 <span>
-                                    <a type="button" class="btn btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#confirmModal" data-url="{{ url_for('remove_todo', id=todo.id) }}" data-taskname="{{ todo.name }}">Remove</a>
-                                </span>
+                                <!-- Button trigger modal -->
+                                <a type="button" class="btn btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#confirmModal" data-url="{{ url_for('remove_todo', id=todo.id) }}" data-taskname="{{ todo.name }}"">Remove</a>
+                            </span>
                         </li>
                         {% endfor %}
                     </ol>
@@ -54,41 +55,41 @@
                 <form action="/add" method="post" class="my-4">
                     <span class="input-group-text">
                         <input type="text" id="todo" name="todo" maxlength="75" class="form-control" placeholder="Add a new task">
-
+                        
                         <button type="button" class="btn btn-outline-secondary" onclick="captureVoice()">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-mic" viewBox="0 0 16 16">
-                                <path d="M3.5 6.5A.5.5 0 0 1 4 7v1a4 4 0 0 0 8 0V7a.5.5 0 0 1 1 0v1a5 5 0 0 1-4.5 4.975V15h3a.5.5 0 0 1 0 1h-7a.5.5 0 0 1 0-1h3v-2.025A5 5 0 0 1 3 8V7a.5.5 0 0  1 .5-.5"></path>
+                                <path d="M3.5 6.5A.5.5 0 0 1 4 7v1a4 4 0 0 0 8 0V7a.5.5 0 0 1 1 0v1a5 5 0 0 1-4.5 4.975V15h3a.5.5 0 0 1 0 1h-7a.5.5 0 0 1 0-1h3v-2.025A5 5 0 0 1 3 8V7a.5.5 0 0 1 .5-.5"></path>
                                 <path d="M10 8a2 2 0 1 1-4 0V3a2 2 0 1 1 4 0zM8 0a3 3 0 0 0-3 3v5a3 3 0 0 0 6 0V3a3 3 0 0 0-3-3"></path>
                             </svg>
                             <span class="visually-hidden" title="Use Microphone"></span>
-                        </button>
+                          </button>
                         <button type="submit" id="addButton" class="btn btn-success" onclick="clearHighlight()" disabled>Add</button>
                     </span>
                     <small class="limit-text">Maximum 75 characters</small>
                 </form>
+
             </div>
-            <div class="col-5"> 
+            <div id="right-panel-info" class="col-5">
                 {% if g.selectedTab != g.TabEnum.NONE %}
-                    <ul class="nav nav-tabs">
-                        <li class="nav-item">
-                            <a id="details-tab" class="nav-link" aria-current="page" href="{{ url_for('details', id=g.todo.id) }}">Details</a>
-                        </li>
-                        <li class="nav-item">
-                            <a id="edit-tab" class="nav-link" href="{{ url_for('edit', id=g.todo.id) }}">Edit</a>
-                        </li>
-                        <li class="nav-item">
-                            <a id="recommendations-tab" class="nav-link" href="{{ url_for('recommend', id=g.todo.id) }}">
-                                <span id="recommendation-spinner" class="spinner-border spinner-border-sm" role="status" aria-hidden="true" hidden></span>
-                                Recommendations
-                            </a>
-                        </li>
-                    </ul>
+                <ul class="nav nav-tabs">
+                    <li class="nav-item">
+                        <a id="details-tab" class="nav-link" aria-current="page" href="{{ url_for('details', id=g.todo.id) }}">Details</a>
+                      </li>
+                    <li class="nav-item">
+                      <a id="edit-tab" class="nav-link" href="{{ url_for('edit', id=g.todo.id) }}">Edit</a>
+                    </li>
+                    <li class="nav-item">
+                      <a id="recommendations-tab" class="nav-link" href="{{ url_for('recommend', id=g.todo.id) }}">
+                        <span id="recommendation-spinner" class="spinner-border spinner-border-sm" role="status" aria-hidden="true" hidden></span>
+                        Recommendations</a>
+                    </li>
+                  </ul>
                 {% endif %}
+
                 {% if g.todo != None and g.selectedTab == g.TabEnum.RECOMMENDATIONS %}       
-                <div id="recommendations-div" class="card">                     
+                <div id="recommendations-div" class="card">  
                     <div class="card-body">
                         <div class="list-group" id="list-of-recommendations">
-                            <h3>AI Recommendations for "{{ g.todo.name }}"</h3>
                             {% for recommend in g.todo.recommendations %}
                             <a href="{{ recommend.link }}" class="list-group-item list-group-item-action"> {{ recommend.title }} </a>
                             {% endfor %}
@@ -108,16 +109,12 @@
                         <p><strong>Due Date:</strong> {{ g.todo.due_date }} </p> 
                         <p><strong>Additional Notes:</strong> {{ g.todo.notes }}</p>
                         <p><strong>Completed:</strong> {{ g.todo.completed_str() }}</p>
-                        <p><strong>Due Date:</strong> {{ g.todo.due_date }} </p> 
-                        <p><strong>Additional Notes:</strong> {{ g.todo.notes }}</p>
-                        <p><strong>Completed:</strong> {{ g.todo.completed_str() }}</p>
                     </div>
                 </div>
                 {% endif %}
                 {% if g.todo != None and g.selectedTab == g.TabEnum.EDIT %}               
                 <div id="edit-div" class="card">
                     <div class="card-body">
-                        <h3>Edit</h3>
                         <form action="{{ url_for('update_todo', id=g.todo.id) }}" method="post">
                             <input type="hidden" name="id" value="{{g.todo.id}}">
                             <div class="form-group">
@@ -191,24 +188,26 @@
             </div>  
         </div>
     </div>
-    <!-- Bootstrap Modal -->
-    <div class="modal" tabindex="-1" id="confirmModal">
-        <div class="modal-dialog">
-            <div class="modal-content">
+
+        <!-- Bootstrap Modal -->
+        <div class="modal" tabindex="-1" id="confirmModal">
+            <div class="modal-dialog">
+              <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Delete Task</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  <h5 class="modal-title">Delete Task</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <p>A   re you sure you want to delete?</p>
-                    <p id="taskName"></p>
+                  <p>Are you sure you want to delete?</p>
+                  <p id="taskName"></p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <a type="button" class="btn btn-danger" id="deleteLink">Delete</a>
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                  <a type="button" class="btn btn-danger" id="deleteLink">Delete</a>
                 </div>
+              </div>
             </div>
         </div>
-    </div>
+    
 </body>
 </html>

@@ -1,4 +1,5 @@
 body {
+    background-color: f0f0f0;  /* light grey */
     color: darkslategray;  /* default font color */
     font-family: Arial, sans-serif;
     background-image: url("../images/Designer.jpeg");
@@ -6,8 +7,9 @@ body {
     background-position: center;
     background-size:cover;
 }
+
 h1 {
-    color: #949FA7; /* font for the h1 header*/
+    color: darkgray; /* font for the h1 header*/
 }
 
 .list-group-item {

@@ -11,6 +11,7 @@ from flask import Flask, render_template, request, redirect, url_for, g
 from database import db, Todo
 from recommendation_engine import RecommendationEngine
 from tab import Tab
+from priority import Priority
 from context_processors import inject_current_date
 
 app = Flask(__name__)
@@ -22,12 +23,12 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db.init_app(app)
 
-with app.app_context():
-    db.create_all()
-
 @app.context_processor
 def inject_common_variables():
     return inject_current_date()
+
+with app.app_context():
+    db.create_all()
 
 @app.before_request
 def load_data_to_g():
@@ -35,6 +36,7 @@ def load_data_to_g():
     g.todos = todos 
     g.todo = None
     g.TabEnum = Tab
+    g.PriorityEnum = Priority
     g.selectedTab = Tab.NONE
 # The db.init_app(app) function initializes the database with the Flask app instance.
 # The with app.app_context(): block creates a context for the application, which is required to interact with the database.
@@ -117,6 +119,7 @@ def update_todo(id):
 # Delete a ToDo
 @app.route('/remove/<int:id>', methods=["POST"])
 def remove_todo(id):
+    g.selectedTab = Tab.NONE
     db.session.delete(Todo.query.filter_by(id=id).first())
     db.session.commit()
     return redirect(url_for('index'))
@@ -167,7 +170,6 @@ def completed(id, complete):
         g.todo.completed = True
     elif (g.todo != None and complete == "false"):
         g.todo.completed = False
-
     #update todo in the database
     db.session.add(g.todo)
     db.session.commit()

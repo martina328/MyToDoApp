@@ -30,17 +30,17 @@ class RecommendationEngine:
     async def get_recommendations(self, keyword_phrase, previous_links_str=None):
         prompt = f"""Please return 5 recommendations based on the input string: '{keyword_phrase}' using correct JSON syntax that contains a title and a hyperlink back to the supporting website. RETURN ONLY JSON AND NOTHING ELSE"""
         system_prompt = """You are an administrative assistant bot who is good at giving 
-            recommendations for tasks that need to be done by referencing website links that can provide 
-            assistance to helping complete the task. 
+        recommendations for tasks that need to be done by referencing website links that can provide 
+        assistance to helping complete the task. 
 
-            If there are not any recommendations simply return an empty collection. 
+        If there are not any recommendations simply return an empty collection. 
 
-            EXPECTED OUTPUT:
-            Provide your response as a JSON object with the following schema:
-            [{"title": "...", "link": "..."},
-            {"title": "...", "link": "..."},
-            {"title": "...", "link": "..."}]
-            """
+        EXPECTED OUTPUT:
+        Provide your response as a JSON object with the following schema:
+        [{"title": "...", "link": "..."},
+        {"title": "...", "link": "..."},
+        {"title": "...", "link": "..."}]
+        """
         
         if previous_links_str is not None:
             prompt = prompt + f". EXCLUDE the following links from your recommendations: {previous_links_str}"  
