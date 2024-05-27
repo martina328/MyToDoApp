@@ -13,6 +13,14 @@ document.addEventListener("DOMContentLoaded", function() {
         nameInput.value = "Your microphone is activated, speak to record voice";
     };
 
+    window.handleClick = function(event, cb) {
+        event.stopPropagation();
+        const rootUrl = window.location.origin;
+        const cbId = cb.id;
+        const cbChecked = cb.checked;
+        window.location.href = `${rootUrl}/completed/${cbId}/${cbChecked}`;
+    };
+
     recognition.onresult = function(event) {
         const transcript = event.results[0][0].transcript;
         const recognizedText = transcript.endsWith('.') ? transcript.slice(0, -1) : transcript;
